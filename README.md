@@ -28,22 +28,10 @@ function getRankClass($rankName) {
         case 'Bronze':
             return 'grey';
         case 'Silver':
-            return 'silver';
+            return '#C0C0C0';
         default:
             return '';
     }
-}
-```
-
-**Don't forget to add the colors in inc/style.css under "your code", where 'grey' and 'silver' are the texts in the 'return'.** 
-```
- .row.grey {
-     background-color: #808080;
-    /* Grey */
-}
- .row.silver {
-     background-color: silver;
-    /* Silver */
 }
 ```
 
