@@ -35,7 +35,7 @@ function getRankClass($rankName) {
 }
 ```
 
-**Don't forget to add the colors in inc/style.css under "your code", where 'bronze' and 'silver' are the texts in the 'return'.** 
+**Don't forget to add the colors in inc/style.css under "your code", where 'grey' and 'silver' are the texts in the 'return'.** 
 ```
  .row.grey {
      background-color: #808080;
