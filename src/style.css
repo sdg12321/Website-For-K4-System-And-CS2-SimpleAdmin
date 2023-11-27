@@ -1,0 +1,241 @@
+a {
+     color: black;
+     text-decoration: none;    
+}
+ body {
+     font-family: 'Arial', sans-serif;
+     background-image: url('background.jpg');
+     background-attachment: fixed;
+     background-size: cover;
+     margin:0px;
+     margin-bottom: 40px;    
+}
+ h1 {
+     color: #fff;
+     font-size: 2em;
+     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+     text-align:center;
+     padding:20px;
+}
+ p {
+     font-size: 20px;
+}
+ .wrapper {
+     margin: 0 auto;
+     padding-left: 40px;
+     padding-right: 40px;
+     max-width: 800px;
+}
+ .wrapperr {
+     background-color: rgba(0, 0, 0, 0.8);
+     max-width: 800px;
+     text-align:center;
+     color: white;
+     margin: 0 auto;
+     padding:20px;
+}
+ .table {
+     margin: 0 0 0px 0;
+     width: 100%;
+     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+     display: table;
+}
+ @media screen and (max-width: 580px) {
+     .table {
+         display: block;
+    }
+}
+ .row {
+     display: table-row;
+     background: #f6f6f6;
+     border-top: 2px solid #ea6153;
+}
+ .row:nth-of-type(odd) {
+     background: #e9e9e9;
+}
+ .row.header {
+     font-weight: 900;
+     color: #ffffff;
+     background: #ea6153;
+}
+ .row.green {
+     background: #27ae60;
+}
+ .row.blue {
+     background: #2980b9;
+}
+ @media screen and (max-width: 580px) {
+     .row {
+         padding: 14px 0 7px;
+         display: block;
+         text-align:center;
+    }
+     .row.header {
+         padding: 0;
+         height: 6px;
+         .cell {
+             display: none;
+        }
+    }
+     .cell {
+         font-size:23px;
+         margin-bottom: 10px;
+    }
+     .cell:before {
+         margin-bottom: 3px;
+         content: attr(data-title);
+         min-width: 98px;
+         font-size: 20px;
+         font-weight: bold;
+         color: #1e1c1c;
+         display: block;
+    }
+}
+ .cell {
+     padding: 6px 12px;
+     display: table-cell;
+}
+ @media screen and (max-width: 580px) {
+     .cell {
+         padding: 2px 16px;
+         display: block;
+    }
+}
+ .row.grey {
+     background-color: #808080;
+    /* Grey */
+}
+ .row.silver {
+     background-color: silver;
+    /* Silver */
+}
+ .row.gold {
+     background-color: gold;
+    /* Gold */
+}
+ .row.blue {
+     background-color: blue;
+    /* Blue */
+}
+ .row.purple {
+     background-color: purple;
+    /* Purple */
+}
+ .row.magenta {
+     background-color: magenta;
+    /* Magenta */
+}
+ .row.lightred {
+     background-color: #FFA07A;
+    /* Light Red */
+}
+ .navbar {
+     background-color: #333;
+     overflow: hidden;
+     text-align: center;
+}
+ .menu-toggle {
+     color: white;
+     cursor: pointer;
+     padding: 14px 16px;
+     font-size: 20px;
+     display: none;
+     background: linear-gradient(to right, #4a90e2, #8a2be2);
+     border: none;
+     border-radius: 5px;
+     transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+}
+ .menu-toggle:hover {
+     background: linear-gradient(to right, #8a2be2, #4a90e2);
+     color: white;
+}
+ .nav-list {
+     list-style-type: none;
+     margin: 0;
+     padding: 0;
+     transition: opacity 0.3s;
+}
+ .nav-list li {
+     display: inline;
+}
+ .nav-list a {
+     display: inline-block;
+     color: white;
+     text-align: center;
+     padding: 14px 16px;
+     text-decoration: none;
+     border-radius: 5px;
+     transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+}
+ .nav-list a:hover {
+     background: linear-gradient(to right, #8a2be2, #4a90e2);
+     color: white;
+}
+ @media screen and (max-width: 600px) {
+     .menu-toggle {
+         display: block;
+    }
+     .nav-list {
+         display: none;
+    }
+     .nav-list.show {
+         display: block;
+         text-align: center;
+         opacity: 1;
+    }
+     .nav-list li {
+         display: block;
+         margin: 10px 0;
+    }
+}
+
+
+ .contentt {
+     padding: 20px;
+}
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .pagination a,
+  .pagination span {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  .pagination a.active,
+  .pagination a:hover {
+    background-color: #4caf50;
+    color: #fff;
+  }
+
+  .pagination a:not(.active) {
+    background-color: #007bff;
+    color: #fff;
+  }
+
+  .pagination span {
+    background-color: #ccc;
+    color: #000;
+  }
+
+  .pagination span.points {
+    background-color: transparent;
+    color: #000;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .pagination a,
+    .pagination span {
+      padding: 8px;
+      font-size: 12px;
+    }
+  }
