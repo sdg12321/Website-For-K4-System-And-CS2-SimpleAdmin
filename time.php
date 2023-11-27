@@ -10,18 +10,16 @@
 	<meta name="description" content="List with the hours played by each player on the CS2.TOPLAY.RO server." />
 </head>
 
- <?php
-    // Include header.php
-    include 'header.php';
-    ?>
+<?php
+// Include header.php
+include 'header.php';
+
+// Include connection.php for connection details.
+include 'src/connection.php';
+?>
 	
 <body>
 
-    <?php   
-    // Include connection.php for connection details.
-    include 'src/connection.php';
-    ?>
-	
     <h1>List with the hours played by each player on the CS2.TOPLAY.RO server.</h1>
 
 <?php
@@ -59,8 +57,12 @@ $current_page = isset($_GET['page']) ? $_GET['page'] : 1;
 $offset = ($current_page - 1) * $recordsPerPage;
 
 // Query to extract the desired information in descending order of the "all" column
-$query = "SELECT name, `all`, ct, t, spec, steam_id, dead, alive FROM k4times ORDER BY `all` DESC LIMIT $recordsPerPage OFFSET $offset";
-$result = $conn->query($query);
+$query = "SELECT name, `all`, ct, t, spec, steam_id, dead, alive FROM k4times ORDER BY `all` DESC LIMIT :limit OFFSET :offset";
+$stmt = $conn->prepare($query);
+$stmt->bindParam(':limit', $recordsPerPage, PDO::PARAM_INT);
+$stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+$stmt->execute();
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Check if the query was successful
 if ($result) {
@@ -80,7 +82,7 @@ if ($result) {
 
     // Iterate through the results and display the information within the HTML template
     $startRowNumber = ($current_page - 1) * $recordsPerPage + 1;
-    while ($row = $result->fetch_assoc()) {
+    foreach ($result as $row) {
         echo '<div class="row">
                 <div class="cell" data-title="#">' . $startRowNumber . '</div>
                 <div class="cell" data-title="Name"><a href="https://steamcommunity.com/profiles/' . $row["steam_id"] . '" target="_blank" rel="noopener">' . $row["name"] . '</a></div>
@@ -106,45 +108,46 @@ if ($result) {
         }
     }
 
-    // Calculate the total number of records (not just those on the current page)
-    $countQuery = "SELECT COUNT(*) as total FROM k4times";
-    $countResult = $conn->query($countQuery);
+// Calculate the total number of records (not just those on the current page)
+$countQuery = "SELECT COUNT(*) as total FROM k4times";
+$countStmt = $conn->prepare($countQuery);
+$countStmt->execute();
+$totalCount = $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
 
-    if ($countResult) {
-        $totalCount = $countResult->fetch_assoc()['total'];
+if ($totalCount) {
+    // Calculate the total number of pages
+    $totalPages = ceil($totalCount / $recordsPerPage);
 
-        // Calculate the total number of pages
-        $totalPages = ceil($totalCount / $recordsPerPage);
+    // Calculate the range of visible pages based on the current page
+    $endPage = min($totalPages, $startPage + $visiblePages - 1);
 
-        // Calculate the range of visible pages based on the current page
-        $endPage = min($totalPages, $startPage + $visiblePages - 1);
-
-        // Display the buttons for each page in the calculated range
-        for ($i = $startPage; $i <= $endPage; $i++) {
-            $activeClass = ($current_page == $i) ? 'active' : '';
-            echo '<a href="?page=' . $i . '" class="' . $activeClass . '">' . $i . '</a>';
-        }
-
-        // Button for the last page
-        if ($endPage < $totalPages) {
-            if ($endPage < $totalPages - 1) {
-                echo '<span>...</span>';
-            }
-            echo '<a href="?page=' . $totalPages . '">' . $totalPages . '</a>';
-        }
-        echo '</div>';
-
-        // Close the wrapper
-        echo '</div>';
-    } else {
-        echo "Query error: " . $conn->error;
+    // Display the buttons for each page in the calculated range
+    for ($i = $startPage; $i <= $endPage; $i++) {
+        $activeClass = ($current_page == $i) ? 'active' : '';
+        echo '<a href="?page=' . $i . '" class="' . $activeClass . '">' . $i . '</a>';
     }
+
+    // Button for the last page
+    if ($endPage < $totalPages) {
+        if ($endPage < $totalPages - 1) {
+            echo '<span>...</span>';
+        }
+        echo '<a href="?page=' . $totalPages . '">' . $totalPages . '</a>';
+    }
+    echo '</div>';
+
+    // Close the wrapper
+    echo '</div>';
 } else {
-    echo "Query error: " . $conn->error;
+    echo "Query error: " . $countStmt->errorInfo()[2];
+}
+
+} else {
+    echo "Query error: " . $stmt->errorInfo()[2];
 }
 
 // Close the connection to the database
-$conn->close();
+$conn = null;
 ?>
 </body>
 </html>

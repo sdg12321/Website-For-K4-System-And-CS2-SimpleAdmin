@@ -5,61 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toplay - CS2 RANK STATS</title>
     <link rel="stylesheet" href="src/style.css">
-	<link href="favicon.ico" rel="shortcut icon" type="image/x-icon" >
-	<meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
-	<meta name="description" content="List of player ranks on the CS2.TOPLAY.RO server." />
+    <link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+    <meta name="description" content="List of player ranks on the CS2.TOPLAY.RO server." />
 </head>
 
-  <?php
-    // Include header.php
-    include 'header.php';
-    ?>
-	
+<?php
+// Include header.php
+include 'header.php';
+
+// Include connection.php pentru detalii de conectare
+include 'src/connection.php';
+?>
+
 <body>
 
-    <?php
-    // Include connection.php pentru detalii de conectare
-    include 'src/connection.php';
-    ?>
     <h1>List of player ranks on the CS2.TOPLAY.RO server.</h1>
 
-<?php
+    <?php
+    // Set the number of records per page
+    $recordsPerPage = 15;
 
-// Set the number of records per page
-$recordsPerPage = 15;
+    // Set the number of visible pages in pagination
+    $visiblePages = 3;
 
-// Set the number of visible pages in pagination
-$visiblePages = 3;
+    // Current page (default is 1 if not set)
+    $current_page = isset($_GET['page']) ? $_GET['page'] : 1;
 
-// Current page (default is 1 if not set)
-$current_page = isset($_GET['page']) ? $_GET['page'] : 1;
+    // Calculate the offset to retrieve the correct records for the current page
+    $offset = ($current_page - 1) * $recordsPerPage;
 
-// Calculate the offset to retrieve the correct records for the current page
-$offset = ($current_page - 1) * $recordsPerPage;
+    // Build a query to retrieve the complete details of paginated records
+    $query = "SELECT name, rank, steam_id, points FROM k4ranks ORDER BY points DESC LIMIT :limit OFFSET :offset";
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':limit', $recordsPerPage, PDO::PARAM_INT);
+    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Build a query to retrieve the complete details of paginated records
-$query = "SELECT name, rank, steam_id, points FROM k4ranks ORDER BY points DESC LIMIT $recordsPerPage OFFSET $offset";
-$result = $conn->query($query);
+    if ($result) {
+        // Display the beginning part of the wrapper
+        echo '<div class="wrapper">';
 
-if ($result) {
-    // Display the beginning part of the wrapper
-    echo '<div class="wrapper">';
+        // Display the beginning part of the table
+        echo '<div class="table">
+                <div class="row header">
+                    <div class="cell">#</div>
+                    <div class="cell">Name</div>
+                    <div class="cell">Rank</div>
+                    <div class="cell">Points</div>
+                </div>';
 
-    // Display the beginning part of the table
-    echo '<div class="table">
-            <div class="row header">
-                <div class="cell">#</div>
-                <div class="cell">Name</div>
-                <div class="cell">Rank</div>
-                <div class="cell">Points</div>
-            </div>';
-
-    // Calculate the total number of records (not just those on the current page)
-    $countQuery = "SELECT COUNT(*) as total FROM k4ranks";
-    $countResult = $conn->query($countQuery);
-
-    if ($countResult) {
-        $totalCount = $countResult->fetch_assoc()['total'];
+        // Calculate the total number of records (not just those on the current page)
+        $countQuery = "SELECT COUNT(*) as total FROM k4ranks";
+        $countStmt = $conn->prepare($countQuery);
+        $countStmt->execute();
+        $totalCount = $countStmt->fetchColumn();
 
         // Calculate the total number of pages
         $totalPages = ceil($totalCount / $recordsPerPage);
@@ -72,7 +73,7 @@ if ($result) {
         $startRowNumber = ($current_page - 1) * $recordsPerPage + 1;
 
         // Iterate through the results and display the information within the HTML template
-        while ($row = $result->fetch_assoc()) {
+        foreach ($result as $row) {
             // Assign a corresponding CSS class based on the rank name
             $rankClass = getRankClass($row["rank"]);
 
@@ -82,7 +83,7 @@ if ($result) {
                     <div class="cell" data-title="Rank" style="color: ' . $rankClass . '; font-weight: bold;">' . $row["rank"] . '</div>
                     <div class="cell" data-title="Points">' . $row["points"] . '</div>
                   </div>';
-            
+
             $startRowNumber++;
         }
 
@@ -117,45 +118,31 @@ if ($result) {
         // Close the wrapper
         echo '</div>';
     } else {
-        echo "Query error: " . $conn->error;
+        echo "Query error: " . $stmt->errorInfo()[2];
     }
-} else {
-    echo "Query error: " . $conn->error;
-}
 
-// Close the connection to the database
-$conn->close();
-
-// Function that returns the corresponding text color based on the rank name
-function getRankClass($rankName) {
-    switch ($rankName) {
-        case 'Bronze':
-            return 'grey';
-        case 'Silver':
-            return 'silver';
-        case 'Gold':
-            return 'gold';
-        case 'Platinum':
-            return 'blue';
-        case 'Diamond':
-            return 'purple';
-        case 'Master':
-            return 'magenta';
-        case 'GrandMaster':
-            return 'Red';
-        default:
-            return '';
+    // Function that returns the corresponding text color based on the rank name
+    function getRankClass($rankName)
+    {
+        switch ($rankName) {
+            case 'Bronze':
+                return 'grey';
+            case 'Silver':
+                return '#C0C0C0';
+            case 'Gold':
+                return 'gold';
+            case 'Platinum':
+                return 'blue';
+            case 'Diamond':
+                return 'purple';
+            case 'Master':
+                return 'magenta';
+            case 'GrandMaster':
+                return 'Red';
+            default:
+                return '';
+        }
     }
-}
-?>
-
-
-
-
-
-
-
+    ?>
 </body>
 </html>
-
-
