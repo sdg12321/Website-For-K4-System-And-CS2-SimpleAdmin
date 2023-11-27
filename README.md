@@ -1,6 +1,8 @@
 # K4-System-Website
 This is a simple website that displays information from the K4-System plugin database. Currently, the plugin only provides rank, stats, time, and only these are displayed on the website. We will implement bans/mutes when the (Basic) Admins plugin becomes available through SQL.
 
+A responsive and pleasing design for a mobile.
+
 # Dependencies
 The default website operates with the database from the K4-System plugin: [K4-System](https://github.com/K4ryuu/K4-System)
 
