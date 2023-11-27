@@ -19,7 +19,7 @@ Changing the colors of the ranks - **rank.php**
 
 At the bottom of the page.
 
-Change **'case'** with the rank name and **'return'** with the desired color.
+Change **'case'** with the rank name and **'return'** with the color name 'grey' or color code '#C0C0C0'.
 
 To modify or delete, change only here, and it should look something like this. In the file, there are multiple ranks; you will see the difference to understand how to add/delete.
 ```
