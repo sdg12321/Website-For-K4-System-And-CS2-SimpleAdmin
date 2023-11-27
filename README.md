@@ -12,7 +12,7 @@ To modify the connection to the database, you need to edit the file src/connecti
 # Additional edits
 You modify the Discord invitation in discord.php.
 
-You can make other manual modifications, such as changing the server's IP, which can be done in the header.php and index.php pages that you can modify as you wish.
+You can make other manual modifications, such as changing the server's NAME and IP, which can be done in the header.php and index.php pages that you can modify as you wish.
 Don't forget to change the description, title, and meta tags for each page (index, rank, time, stats, etc.)
 
 Changing the colors of the ranks - **rank.php**
