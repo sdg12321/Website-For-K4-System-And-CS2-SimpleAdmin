@@ -9,7 +9,7 @@ try {
     $conn = new PDO("mysql:host=$hostname;dbname=$database", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    die("Conexiunea la baza de date a eșuat: " . $e->getMessage());
+    die("Database connection failed: " . $e->getMessage());
 }
 ?>
 
