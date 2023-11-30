@@ -25,12 +25,15 @@ To modify or delete, change only here, and it should look something like this. I
 ```
 function getRankClass($rankName) {
     switch ($rankName) {
+
         case 'Bronze':
-            return 'grey';
+        return 'grey';
+
         case 'Silver':
-            return '#C0C0C0';
+        return '#C0C0C0';
+
         default:
-            return '';
+        return '';
     }
 }
 ```
