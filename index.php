@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toplay - K4-System Website</title>
-    <link rel="stylesheet" href="src/style.css">
-		<link href="favicon.ico" rel="shortcut icon" type="image/x-icon" >
+	<link href="favicon.ico" rel="shortcut icon" type="image/x-icon" >
 	<meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
 	<meta name="description" content="Website for the K4-System stats plugin" />
-</head>
+
 
   <?php
     // Include header.php

@@ -1,4 +1,6 @@
-<!-- Created by SDG - toplay.ro v1.0.0 -->
+<link rel="stylesheet" href="src/style.css?v=1.1.0">
+<!-- Created by SDG - toplay.ro v1.1.0 -->
+</head>
 <header>
 <script src="src/script.js" defer></script>
   <nav class="navbar">

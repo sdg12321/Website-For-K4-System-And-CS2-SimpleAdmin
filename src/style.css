@@ -16,6 +16,7 @@ a {
      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
      text-align:center;
      padding:20px;
+	 word-wrap: break-word;
 }
  p {
      font-size: 20px;
@@ -101,34 +102,7 @@ a {
          display: block;
     }
 }
- .row.grey {
-     background-color: #808080;
-    /* Grey */
-}
- .row.silverr {
-     background-color: red;
-    /* Silver */
-}
- .row.gold {
-     background-color: gold;
-    /* Gold */
-}
- .row.blue {
-     background-color: blue;
-    /* Blue */
-}
- .row.purple {
-     background-color: purple;
-    /* Purple */
-}
- .row.magenta {
-     background-color: magenta;
-    /* Magenta */
-}
- .row.lightred {
-     background-color: #FFA07A;
-    /* Light Red */
-}
+ 
  .navbar {
      background-color: #333;
      overflow: hidden;
@@ -239,6 +213,71 @@ a {
       font-size: 12px;
     }
   }
+  
+     .errordiv {
+     margin: 0 auto;
+     padding-left: 40px;
+     padding-right: 40px;
+     max-width: 800px;
+	 text-align:center;
+	 font-size:20px;
+	 color:white;
+}
+  
+   .searchdiv {
+     margin: 0 auto;
+     padding-left: 40px;
+     padding-right: 40px;
+     max-width: 800px;
+}
+
+.searchdiv {
+    margin-top: 10px;
+}
+
+.searchdiv form {
+    display: flex;
+    justify-content: center;
+}
+
+.searchdiv input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.searchdiv button {
+    padding: 8px 16px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.searchdiv button:hover {
+    background-color: #0056b3;
+}
+
+.back-button {
+    display: block;
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+	text-align:center;
+}
+
+.back-button:hover {
+    background-color: #0056b3;
+}
+
 
 /* Your code */
 
