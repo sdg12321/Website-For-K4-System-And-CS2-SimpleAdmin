@@ -40,4 +40,4 @@ For assistance, you can contact me on [Discord](https://discord.gg/Ebr62RJRd4).
 # Screenshot
 You can see the live website here: [toplay.ro](https://toplay.ro/)
 
-![2](https://github.com/sdg12321/K4-System-Website/assets/151413805/b65f4f23-42aa-4d58-ae02-7d3001fc9fe7)
+![site](https://github.com/sdg12321/K4-System-Website/assets/151413805/54bd1d5a-ea1a-4ff6-a0a4-e55631362e04)
