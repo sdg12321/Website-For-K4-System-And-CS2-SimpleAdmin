@@ -9,6 +9,8 @@ A responsive and pleasing design for a mobile.
 The default website operates with the database from the K4-System plugin: [K4-System](https://github.com/K4ryuu/K4-System)
 
 # Installation
+Download the last version of website: [releases](https://github.com/sdg12321/K4-System-Website/releases)
+
 To modify the connection to the database, you need to edit the file src/connection.php. (If you have configured the K4-System plugin and it is functioning within normal parameters, then you can find the connection information in the CS2 server at: counterstrikesharp/configs/plugins/K4-System/K4-System.json.)
 
 # Additional edits
