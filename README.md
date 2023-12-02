@@ -11,10 +11,10 @@ The default website operates with the database from the K4-System plugin: [K4-Sy
 # Installation
 Download the last version of website: [releases](https://github.com/sdg12321/K4-System-Website/releases)
 
-To modify the connection to the database, you need to edit the file src/connection.php. (If you have configured the K4-System plugin and it is functioning within normal parameters, then you can find the connection information in the CS2 server at: counterstrikesharp/configs/plugins/K4-System/K4-System.json.)
+To modify the connection to the database, you need to edit the file **src/connection.php**. (If you have configured the K4-System plugin and it is functioning within normal parameters, then you can find the connection information in the CS2 server at: counterstrikesharp/configs/plugins/K4-System/K4-System.json.)
 
 # Additional edits
-You modify the Discord invitation in discord.php.
+You modify the Discord invitation in **discord.php**.
 
 You can make other manual modifications, such as changing the server's NAME and IP, which can be done in the header.php and index.php pages that you can modify as you wish.
 Don't forget to change the description, title, and meta tags for each page (index, rank, time, stats, etc.)
