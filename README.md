@@ -44,6 +44,10 @@ function getRankClass($rankName) {
 
 For assistance, you can contact me on [Discord](https://discord.gg/Ebr62RJRd4). 
 
+# To Do list
+- [x] To implement rank, stats, and hours played from k4-system.
+- [ ] List of Admins / Bans / Gags (Waiting for the css-basic-admin database.)
+
 # Screenshot
 You can see the live website here: [toplay.ro](https://toplay.ro/)
 
