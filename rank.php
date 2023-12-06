@@ -9,6 +9,9 @@
     <meta name="description" content="List of player ranks on the CS2.TOPLAY.RO server." />
 
 
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <?php
 // Include header.php
 include 'header.php';
@@ -16,6 +19,36 @@ include 'header.php';
 // Include connection.php for connection details
 include 'src/connection.php';
 ?>
+
+<script>
+$(document).ready(function(){
+    jQuery(".cell1").click(function() {
+		var btn_call_action = jQuery(this);
+
+        var data_steamid = jQuery(this).attr("data-steamid");
+		var data_names = jQuery(this).attr("data-names");
+		var data_lastseen = jQuery(this).attr("data-lastseen");
+		var data_kills = jQuery(this).attr("data-kills");
+		var data_deaths = jQuery(this).attr("data-deaths");
+		var data_assists = jQuery(this).attr("data-assists");
+		var data_hitstaken = jQuery(this).attr("data-hitstaken");
+		var data_hitsgiven = jQuery(this).attr("data-hitsgiven");
+		var data_headshots = jQuery(this).attr("data-headshots");
+		var data_grenades = jQuery(this).attr("data-grenades");
+		var data_mvp = jQuery(this).attr("data-mvp");
+		var data_roundwin = jQuery(this).attr("data-roundwin");
+		var data_roundlose = jQuery(this).attr("data-roundlose");
+		var data_kda = jQuery(this).attr("data-kda");
+
+	
+	
+  Swal.fire({
+	html: '<h2>STATS</h2><b>Steam Profile:</b> <a href="https://steamcommunity.com/profiles/' + data_steamid + '" target="_blank" rel="noopener">' + data_names + '</a><br><b>Last Seen:</b> ' + data_lastseen + '<br><b>Kills:</b> ' + data_kills + '<br><b>Deaths:</b> ' + data_deaths + '<br><b>Assists:</b> ' + data_assists + '<br><b>Hits Taken:</b> ' + data_hitstaken + '<br><b>Hits Given:</b> ' + data_hitsgiven + '<br><b>Headshots:</b> ' + data_headshots + '<br><b>Grenades:</b> ' + data_grenades + '<br><b>MVP:</b> ' + data_mvp + '<br><b>Rounds Win:</b> ' + data_roundwin + '<br><b>Rounds Lose:</b> ' + data_roundlose + '<br><b>KDA:</b> ' + data_kda,
+	confirmButtonText: 'Inchide'
+})
+    });
+});
+</script>
 
 <body>
 
@@ -49,14 +82,19 @@ if (isset($_GET['search'])) {
     $offset = ($current_page - 1) * $recordsPerPage;
 
     // Build a query to retrieve the complete details of paginated records with optional search
-    $search = isset($_GET['search']) ? $_GET['search'] : '';
-    $query = "SELECT name, rank, steam_id, points FROM k4ranks WHERE name LIKE :search ORDER BY points DESC LIMIT :limit OFFSET :offset";
-    $stmt = $conn->prepare($query);
-    $stmt->bindValue(':limit', $recordsPerPage, PDO::PARAM_INT);
-    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-    $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
-    $stmt->execute();
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+   $search = isset($_GET['search']) ? $_GET['search'] : '';
+	$query = "SELECT k4ranks.name, k4ranks.rank, k4ranks.steam_id, k4ranks.points, k4stats.steam_id, k4stats.name, k4stats.lastseen, k4stats.kills, k4stats.deaths, k4stats.assists, k4stats.hits_taken, k4stats.hits_given, k4stats.headshots, k4stats.grenades, k4stats.mvp, k4stats.round_win, k4stats.round_lose, k4stats.kda FROM k4ranks
+	JOIN k4stats ON k4ranks.steam_id = k4stats.steam_id
+	WHERE k4ranks.name LIKE :search OR k4stats.name LIKE :search
+	ORDER BY k4ranks.points DESC, k4stats.kills DESC
+	LIMIT :offset, :limit";
+
+	$stmt = $conn->prepare($query);
+	$stmt->bindParam(':limit', $recordsPerPage, PDO::PARAM_INT);
+	$stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+	$stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
+	$stmt->execute();
+	$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     if ($result) {
         // Display the beginning part of the wrapper
@@ -95,7 +133,7 @@ if (isset($_GET['search'])) {
 
             echo '<div class="row">
                     <div class="cell" data-title="#">' . $startRowNumber . '</div>
-                    <div class="cell" data-title="Name"><a href="https://steamcommunity.com/profiles/' . $row["steam_id"] . '" target="_blank" rel="noopener">' . $row["name"] . '</a></div>
+                    <div class="cell cell1" data-title="Name" data-steamid="' . $row["steam_id"] . '" data-names="' . $row["name"] . '" data-lastseen="' . $row["lastseen"] . '" data-kills="' . $row["kills"] . '" data-deaths="' . $row["deaths"] . '" data-assists="' . $row["assists"] . '" data-hitstaken="' . $row["hits_taken"] . '" data-hitsgiven="' . $row["hits_given"] . '" data-headshots="' . $row["headshots"] . '" data-grenades="' . $row["grenades"] . '" data-mvp="' . $row["mvp"] . '" data-roundwin="' . $row["round_win"] . '" data-roundlose="' . $row["round_lose"] . '" data-kda="' . $row["kda"] . '" >' . $row["name"] . '</div>
                     <div class="cell" data-title="Rank" style="color: ' . $rankClass . '; font-weight: bold;">' . $row["rank"] . '</div>
                     <div class="cell" data-title="Points">' . $row["points"] . '</div>
                   </div>';

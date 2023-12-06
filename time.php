@@ -7,7 +7,9 @@
 	<link href="favicon.ico" rel="shortcut icon" type="image/x-icon" >
 	<meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
 	<meta name="description" content="List with the hours played by each player on the CS2.TOPLAY.RO server." />
-
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <?php
 // Include header.php
 include 'header.php';
@@ -15,7 +17,25 @@ include 'header.php';
 // Include connection.php for connection details.
 include 'src/connection.php';
 ?>
+	<script>
+$(document).ready(function(){
+    jQuery(".cell1").click(function() {
+		var btn_call_action = jQuery(this);
+
+        var data_steamid = jQuery(this).attr("data-steamid");
+		var data_dead = jQuery(this).attr("data-dead");
+		var data_alive = jQuery(this).attr("data-alive");
+		var data_names = jQuery(this).attr("data-names");
 	
+	
+  Swal.fire({
+	icon: "info",  
+	html: '<b>Steam Profile:</b> <a href="https://steamcommunity.com/profiles/' + data_steamid + '" target="_blank" rel="noopener">' + data_names + '</a><br><b>Dead:</b> ' + (data_dead ? data_dead : '-') + '<br><b>Alive:</b> ' + (data_alive ? data_alive : '-'),
+	confirmButtonText: 'Inchide'
+})
+    });
+});
+</script>
 <body>
 
     <h1>List with the hours played by each player on the CS2.TOPLAY.RO server.</h1>
@@ -70,13 +90,13 @@ $offset = ($current_page - 1) * $recordsPerPage;
 
 // Query to extract the desired information in descending order of the "all" column
  $search = isset($_GET['search']) ? $_GET['search'] : '';
-$query = "SELECT name, `all`, ct, t, spec, steam_id, dead, alive FROM k4times WHERE name LIKE :search ORDER BY `all` DESC LIMIT :limit OFFSET :offset";
-$stmt = $conn->prepare($query);
-$stmt->bindParam(':limit', $recordsPerPage, PDO::PARAM_INT);
-$stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
- $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
-$stmt->execute();
-$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$query = "SELECT name, `all`, ct, t, spec, steam_id, dead, alive FROM k4times WHERE name LIKE :search ORDER BY `all` DESC LIMIT :offset, :limit";
+	$stmt = $conn->prepare($query);
+	$stmt->bindValue(':limit', $recordsPerPage, PDO::PARAM_INT);
+	$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+	$stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Check if the query was successful
 if ($result) {
@@ -110,12 +130,12 @@ if ($result) {
 
         // Calculate the order number of the first row on the page
         $startRowNumber = ($current_page - 1) * $recordsPerPage + 1;
-		
+
 		
     foreach ($result as $row) {
         echo '<div class="row">
                 <div class="cell" data-title="#">' . $startRowNumber . '</div>
-                <div class="cell" data-title="Name"><a href="https://steamcommunity.com/profiles/' . $row["steam_id"] . '" target="_blank" rel="noopener">' . $row["name"] . '</a></div>
+                <div class="cell cell1" data-title="Name" data-steamid="' . $row["steam_id"] . '" data-dead="' . secondsToMinutes($row["dead"]) . '" data-alive="' . secondsToMinutes($row["alive"]) . '" data-names="' . $row["name"] . '">' . $row["name"] . '</div>
                 <div class="cell" data-title="Total (aprox.)">' . secondsToMinutes($row["all"]) . '</div>
                 <div class="cell" data-title="CT">' . secondsToMinutes($row["ct"]) . '</div>
                 <div class="cell" data-title="Terrorist">' . secondsToMinutes($row["t"]) . '</div>
