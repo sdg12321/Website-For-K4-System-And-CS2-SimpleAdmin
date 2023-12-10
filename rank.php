@@ -6,7 +6,7 @@
     <title>Toplay - CS2 RANK STATS</title>
     <link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
     <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
-    <meta name="description" content="List of player ranks on the CS2.TOPLAY.RO server." />
+    <meta name="description" content="List of player ranks on the YOURSERVER." />
 
 
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
@@ -27,7 +27,6 @@ $(document).ready(function(){
 
         var data_steamid = jQuery(this).attr("data-steamid");
 		var data_names = jQuery(this).attr("data-names");
-		var data_lastseen = jQuery(this).attr("data-lastseen");
 		var data_kills = jQuery(this).attr("data-kills");
 		var data_deaths = jQuery(this).attr("data-deaths");
 		var data_assists = jQuery(this).attr("data-assists");
@@ -43,7 +42,7 @@ $(document).ready(function(){
 	
 	
   Swal.fire({
-	html: '<h2>STATS</h2><b>Steam Profile:</b> <a href="https://steamcommunity.com/profiles/' + data_steamid + '" target="_blank" rel="noopener">' + data_names + '</a><br><b>Last Seen:</b> ' + data_lastseen + '<br><b>Kills:</b> ' + data_kills + '<br><b>Deaths:</b> ' + data_deaths + '<br><b>Assists:</b> ' + data_assists + '<br><b>Hits Taken:</b> ' + data_hitstaken + '<br><b>Hits Given:</b> ' + data_hitsgiven + '<br><b>Headshots:</b> ' + data_headshots + '<br><b>Grenades:</b> ' + data_grenades + '<br><b>MVP:</b> ' + data_mvp + '<br><b>Rounds Win:</b> ' + data_roundwin + '<br><b>Rounds Lose:</b> ' + data_roundlose + '<br><b>KDA:</b> ' + data_kda,
+	html: '<h2>STATS</h2><b>Steam Profile:</b> <a href="https://steamcommunity.com/profiles/' + data_steamid + '" target="_blank" rel="noopener">' + data_names + '</a><br><b>Deaths:</b> ' + data_deaths + '<br><b>Assists:</b> ' + data_assists + '<br><b>Hits Taken:</b> ' + data_hitstaken + '<br><b>Hits Given:</b> ' + data_hitsgiven + '<br><b>Headshots:</b> ' + data_headshots + '<br><b>Grenades:</b> ' + data_grenades + '<br><b>MVP:</b> ' + data_mvp + '<br><b>Rounds Win:</b> ' + data_roundwin + '<br><b>Rounds Lose:</b> ' + data_roundlose + '<br><b>KDA:</b> ' + data_kda,
 	confirmButtonText: 'Inchide'
 })
     });
@@ -52,7 +51,7 @@ $(document).ready(function(){
 
 <body>
 
-    <h1>List of player ranks on the CS2.TOPLAY.RO server.</h1>
+    <h1>List of player ranks on the YOURSERVER.</h1>
 
     <!-- Search form for names -->
 	<div class="searchdiv">
@@ -83,7 +82,7 @@ if (isset($_GET['search'])) {
 
     // Build a query to retrieve the complete details of paginated records with optional search
    $search = isset($_GET['search']) ? $_GET['search'] : '';
-	$query = "SELECT k4ranks.name, k4ranks.rank, k4ranks.steam_id, k4ranks.points, k4stats.steam_id, k4stats.name, k4stats.lastseen, k4stats.kills, k4stats.deaths, k4stats.assists, k4stats.hits_taken, k4stats.hits_given, k4stats.headshots, k4stats.grenades, k4stats.mvp, k4stats.round_win, k4stats.round_lose, k4stats.kda FROM k4ranks
+	$query = "SELECT k4ranks.name, k4ranks.rank, k4ranks.steam_id, k4ranks.points, k4stats.steam_id, k4stats.name, k4stats.kills, k4stats.deaths, k4stats.assists, k4stats.hits_taken, k4stats.hits_given, k4stats.headshots, k4stats.grenades, k4stats.mvp, k4stats.round_win, k4stats.round_lose, k4stats.kda FROM k4ranks
 	JOIN k4stats ON k4ranks.steam_id = k4stats.steam_id
 	WHERE k4ranks.name LIKE :search OR k4stats.name LIKE :search
 	ORDER BY k4ranks.points DESC, k4stats.kills DESC
@@ -133,7 +132,7 @@ if (isset($_GET['search'])) {
 
             echo '<div class="row">
                     <div class="cell" data-title="#">' . $startRowNumber . '</div>
-                    <div class="cell cell1" data-title="Name" data-steamid="' . $row["steam_id"] . '" data-names="' . $row["name"] . '" data-lastseen="' . $row["lastseen"] . '" data-kills="' . $row["kills"] . '" data-deaths="' . $row["deaths"] . '" data-assists="' . $row["assists"] . '" data-hitstaken="' . $row["hits_taken"] . '" data-hitsgiven="' . $row["hits_given"] . '" data-headshots="' . $row["headshots"] . '" data-grenades="' . $row["grenades"] . '" data-mvp="' . $row["mvp"] . '" data-roundwin="' . $row["round_win"] . '" data-roundlose="' . $row["round_lose"] . '" data-kda="' . $row["kda"] . '" >' . $row["name"] . '</div>
+                    <div class="cell cell1" data-title="Name" data-steamid="' . $row["steam_id"] . '" data-names="' . $row["name"] . '" data-kills="' . $row["kills"] . '" data-deaths="' . $row["deaths"] . '" data-assists="' . $row["assists"] . '" data-hitstaken="' . $row["hits_taken"] . '" data-hitsgiven="' . $row["hits_given"] . '" data-headshots="' . $row["headshots"] . '" data-grenades="' . $row["grenades"] . '" data-mvp="' . $row["mvp"] . '" data-roundwin="' . $row["round_win"] . '" data-roundlose="' . $row["round_lose"] . '" data-kda="' . $row["kda"] . '" >' . $row["name"] . '</div>
                     <div class="cell" data-title="Rank" style="color: ' . $rankClass . '; font-weight: bold;">' . $row["rank"] . '</div>
                     <div class="cell" data-title="Points">' . $row["points"] . '</div>
                   </div>';

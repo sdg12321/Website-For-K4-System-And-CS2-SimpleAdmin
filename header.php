@@ -1,5 +1,5 @@
-<link rel="stylesheet" href="src/style.css?v=1.1.0">
-<!-- Created by SDG - toplay.ro v1.1.0 -->
+<link rel="stylesheet" href="src/style.css?v=2.1.0">
+<!-- Created by SDG - toplay.ro v2.1.0 -->
 </head>
 <header>
 <script src="src/script.js" defer></script>
@@ -10,7 +10,7 @@
             <li><a href="rank.php">Rank</a></li>
             <li><a href="time.php">Time</a></li>
 			<li><a href="/discord.php" target="_blank" rel="noopener">Discord</a></li>
-<a href="steam://connect/45.13.151.136:27015" target="_blank" rel="noopener" style="color: #00FF00;">Connect CS2.TOPLAY.RO</a>
+<a href="steam://connect/YOURIP:27015" target="_blank" rel="noopener" style="color: #00FF00;">Connect YOURSERVER</a>
         </ul>
     </nav>
 </header>

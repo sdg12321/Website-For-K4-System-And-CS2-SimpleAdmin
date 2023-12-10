@@ -41,7 +41,7 @@ a {
      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
      display: table;
 }
- @media screen and (max-width: 580px) {
+ @media screen and (max-width: 600px) {
      .table {
          display: block;
     }
@@ -65,19 +65,27 @@ a {
  .row.blue {
      background: #2980b9;
 }
- @media screen and (max-width: 580px) {
+ @media screen and (max-width: 600px) {
      .row {
          padding: 14px 0 7px;
          display: block;
          text-align:center;
     }
-     .row.header {
-         padding: 0;
-         height: 6px;
-         .cell {
-             display: none;
-        }
-    }
+.row.header {
+    padding: 0;
+    height: 6px;
+}
+
+.row.header .cell {
+    display: none!important;
+}
+
+	/* Safari-specific styles */
+  @supports (-webkit-touch-callout: none) {
+    .row.header .cell {
+    display: none!important;
+}
+}	
      .cell {
          font-size:23px;
          margin-bottom: 10px;
@@ -96,7 +104,7 @@ a {
      padding: 6px 12px;
      display: table-cell;
 }
- @media screen and (max-width: 580px) {
+ @media screen and (max-width: 600px) {
      .cell {
          padding: 2px 16px;
          display: block;
@@ -278,6 +286,9 @@ a {
     background-color: #0056b3;
 }
 
+.cell1 {
+    cursor: pointer;
+}
 
 /* Your code */
 
