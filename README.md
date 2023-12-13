@@ -32,7 +32,7 @@ break;
 ```
 
 **STEP 3:** In the serversmenu.php file, add the menu with the servers you configured in step 2.
-The text "Server1" in "onclick="changeServer('Server1')" needs to be replaced with the name you entered in step 2. For each additional server, add a line like <button class="server-button" onclick="changeServer('Server1')">NameServer1</button> and replace the "Server1" with the name of the server you entered in step 2.
+The text "Server1" in "onclick="changeServer('Server1')" needs to be replaced with the name you entered in step 2. For each additional server, add a new line and replace the "Server1" with the name of the server you entered in step 2 and "NameServer1" with what you want.
 
 The text "NameServer1" is the name that will be displayed on the website, meaning the button's label. Here, you can enter whatever you prefer, for example, "Zombie," "Classic," etc.
 
