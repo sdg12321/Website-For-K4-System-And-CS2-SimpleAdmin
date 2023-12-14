@@ -19,42 +19,19 @@ To modify the connection to the database, you need to edit the file **src/connec
 
 **STEP 2:** To modify the connection to the database, you need to edit the file **src/connection.php**. (If you have configured the K4-System plugin and it is functioning within normal parameters, then you can find the connection information in the CS2 server at: counterstrikesharp/configs/plugins/K4-System/K4-System.json.)
 
-For each server, you need to add a unique name in the "case," such as "Server1," "Server2," etc. If you have two servers, you should have only two "cases" with the connection details for each. If you have three servers, you will have three "cases" with the connection details for each.
+For each server, you need to add a unique name such as 'server1', 'server1' etc. Add or remove as many servers as needed.
 
 ```
-case 'Server1':
-$hostname = "";
-$port = "3306"; // Add the port corresponding to server 1
-$username = "";
-$password = "";
-$database = "";
-break;
+'server1' => [
+        'hostname' => '',
+        'port' => '3306',
+        'username' => '',
+        'password' => '',
+        'database' => '',
+        'prefix' => ''
+    ],
 ```
 
-**STEP 3:** In the serversmenu.php file, add the menu with the servers you configured in step 2.
-The text "Server1" in "onclick="changeServer('Server1')" needs to be replaced with the name you entered in step 2. For each additional server, add a new line and replace the "Server1" with the name of the server you entered in step 2 and "NameServer1" with what you want.
-
-The text "NameServer1" is the name that will be displayed on the website, meaning the button's label. Here, you can enter whatever you prefer, for example, "Zombie," "Classic," etc.
-
-```
-<div class="server-buttons">
-<button class="server-button" onclick="changeServer('Server1')">NameServer1</button>
-<button class="server-button" onclick="changeServer('Server2')">NameServer2</button>
-<!-- Add other servers here if necessary -->
-```
-
-**STEP 4:** For both rank.php and time.php pages, you need to enter and modify the default page to be displayed when accessing rank.php or time.php. For example, if you have 3 servers - Zombie, Classic, and HNS - and when the website is accessed on the rank.php page, you want the first results to be displayed from the Classic server, modify where it says "Server1" with the name entered in the "case" from step 2. This needs to be modified in both sections of the following code and in both pages.
-
-```
-// Check if a server has been selected
-$selectedServer = isset($_GET['server']) ? $_GET['server'] : 'Server1';
-
-// If 'server' parameter is not set, redirect to the default server
-if (!isset($_GET['server'])) {
-    header("Location: ?server=Server1");
-    exit();
-}
-```
 
 # Additional edits
 You modify the Discord invitation in **discord.php**.
