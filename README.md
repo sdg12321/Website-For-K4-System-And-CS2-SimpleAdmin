@@ -19,7 +19,7 @@ To modify the connection to the database, you need to edit the file **src/connec
 
 **STEP 2:** To modify the connection to the database, you need to edit the file **src/connection.php**. (If you have configured the K4-System plugin and it is functioning within normal parameters, then you can find the connection information in the CS2 server at: counterstrikesharp/configs/plugins/K4-System/K4-System.json.)
 
-For each server, you need to add a unique name such as 'server1', 'server1' etc. Add or remove as many servers as needed.
+For each server, you need to add a unique name such as 'server1', 'server2' etc. Add or remove as many servers as needed.
 
 ```
 'server1' => [
