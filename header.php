@@ -1,5 +1,5 @@
-<link rel="stylesheet" href="src/style.css?v=2.1.0">
-<!-- Created by SDG - toplay.ro v2.1.0 -->
+<link rel="stylesheet" href="src/style.css?v=4.1.0">
+<!-- Created by SDG - toplay.ro v4.1.0 -->
 </head>
 <header>
 <script src="src/script.js" defer></script>

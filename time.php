@@ -6,7 +6,7 @@
     <title>Toplay - CS2 Hours Played</title>
 	<link href="favicon.ico" rel="shortcut icon" type="image/x-icon" >
 	<meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
-	<meta name="description" content="List with the hours played by each player on the YOURSERVER." />
+	<meta name="description" content="List with the hours played by each player on the server." />
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
 	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css" rel="stylesheet">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -14,9 +14,36 @@
 // Include header.php
 include 'header.php';
 
-// Include connection.php for connection details.
+// Include connection.php for connection details
 include 'src/connection.php';
+
+// Connect to the database corresponding to the selected server
+$selectedServer = isset($_GET['server']) ? $_GET['server'] : null;
+$conn = connectToDatabase($selectedServer);
+
+// Check if the connection was successfully established
+if ($conn) {
+    // Retrieve the list of servers after the connection is established
+    $serverList = getServerList($conn);
+
+    // Set the default server if it is not already set
+    if (!isset($_GET['server'])) {
+        header("Location: ?server=" . $conn->defaultServer);
+        exit();
+    }
+
+    // Redirect to the default server if the 'server' parameter is not valid
+    if (!in_array($_GET['server'], $serverList)) {
+        header("Location: ?server=" . $conn->defaultServer);
+        exit();
+    }
+} else {
+    // Handle the error or return an appropriate value
+    die("Database connection failed.");
+}
 ?>
+		
+	
 	<script>
 $(document).ready(function(){
     jQuery(".cell1").click(function() {
@@ -32,27 +59,78 @@ $(document).ready(function(){
   Swal.fire({
 	icon: "info",  
 	html: '<b>Steam Profile:</b> <a href="https://steamcommunity.com/profiles/' + data_steamid + '" target="_blank" rel="noopener">' + data_names + '</a><br><b>Last Seen:</b> ' + (data_lastseen ? data_lastseen : '-') + '<br><b>Dead:</b> ' + (data_dead ? data_dead : '-') + '<br><b>Alive:</b> ' + (data_alive ? data_alive : '-'),
-	confirmButtonText: 'Inchide'
+	confirmButtonText: 'Close'
 })
     });
 });
 </script>
 <body>
 
-    <h1>List with the hours played by each player on the YOURSERVER.</h1>
+<div class="server-buttons">
+    <?php
+    $serverList = getServerList($conn);
+    foreach ($serverList as $server) {
+        echo '<button class="server-button" onclick="setPrefixAndChangeServer(\'' . $server . '\', \'\')">' . strtoupper($server) . '</button>';
+    }
+    ?>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Set the active class based on the current server parameter
+        var searchParams = new URLSearchParams(window.location.search);
+        var currentServer = searchParams.get('server');
+        setActiveButton(currentServer);
+    });
+
+function changeServer(selectedServer) {
+    // Set the 'server' parameter to the new server and remove other parameters
+    window.location.href = '?' + new URLSearchParams({ 'server': selectedServer }).toString();
+}
+
+function setPrefixAndChangeServer(selectedServer, prefix) {
+    // Save the prefix in a cookie
+    setCookie("prefix", prefix, 30);
+
+    // Redirect to the selected server
+    changeServer(selectedServer);
+}
+
+function setActiveButton(serverName) {
+    var buttons = document.querySelectorAll('.server-button');
+    buttons.forEach(function (button) {
+        button.classList.remove('active');
+        if (button.innerText.toLowerCase() === serverName.toLowerCase()) {
+            button.classList.add('active');
+        }
+    });
+}
+
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }	
 	
- <!-- Search form for names -->
-	<div class="searchdiv">
+</script>
+
+
+    <h1>List with the hours played by each player on the server!</h1>
+	
+<!-- Search form for names -->
+<div class="searchdiv">
     <form method="GET" action="">
-        <input type="text" id="search" name="search" placeholder="Enter Player Name">
+        <input type="text" id="search" name="search" placeholder="Enter name...">
+        <input type="hidden" name="server" value="<?php echo $selectedServer; ?>">
         <button type="submit">Search</button>
     </form>
-<?php
-// Check if a search has been performed
-if (isset($_GET['search'])) {
-    echo '<a href="' . $_SERVER['PHP_SELF'] . '" class="back-button">Back to All</a>';
-}
-?>
+    <?php
+    // Check if a search has been performed
+    if (isset($_GET['search'])) {
+        echo '<a href="' . $_SERVER['PHP_SELF'] . '?server=' . $selectedServer . '" class="back-button">Back to All</a>';
+    }
+    ?>
 </div><br>
 
 <?php
@@ -89,13 +167,16 @@ $current_page = isset($_GET['page']) ? $_GET['page'] : 1;
 // Calculate the offset to retrieve the correct records for the current page
 $offset = ($current_page - 1) * $recordsPerPage;
 
-// Query to extract the desired information in descending order of the "all" column
- $search = isset($_GET['search']) ? $_GET['search'] : '';
-$query = "SELECT k4times.name, k4times.`all`, k4times.ct, k4times.t, k4times.spec, k4times.steam_id, k4times.dead, k4times.alive, k4stats.lastseen
-          FROM k4times
-          LEFT JOIN k4stats ON k4times.steam_id = k4stats.steam_id
-          WHERE k4times.name LIKE :search
-          ORDER BY k4times.`all` DESC
+// The prefix is set based on the selected server.
+$prefix = $conn->servers[$selectedServer]['prefix'];
+
+	$search = isset($_GET['search']) ? $_GET['search'] : '';
+    // Construiește query-ul cu prefixul
+$query = "SELECT {$prefix}k4times.name, {$prefix}k4times.`all`, {$prefix}k4times.ct, {$prefix}k4times.t, {$prefix}k4times.spec, {$prefix}k4times.steam_id, {$prefix}k4times.dead, {$prefix}k4times.alive, {$prefix}k4stats.lastseen
+          FROM {$prefix}k4times
+          LEFT JOIN {$prefix}k4stats ON {$prefix}k4times.steam_id = {$prefix}k4stats.steam_id
+          WHERE {$prefix}k4times.name LIKE :search
+          ORDER BY {$prefix}k4times.`all` DESC
           LIMIT :offset, :limit";
 		  $stmt = $conn->prepare($query);
 	$stmt->bindValue(':limit', $recordsPerPage, PDO::PARAM_INT);
@@ -121,7 +202,7 @@ if ($result) {
             </div>';
 
 // Calculate the total number of records (not just those on the current page)
-        $countQuery = "SELECT COUNT(*) as total FROM k4times WHERE name LIKE :search";
+        $countQuery = "SELECT COUNT(*) as total FROM {$prefix}k4times WHERE name LIKE :search";
         $countStmt = $conn->prepare($countQuery);
 		$countStmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
         $countStmt->execute();
@@ -153,11 +234,11 @@ if ($result) {
     // Display the ending part of the table
         echo '</div>';
 
-        // Display pagination buttons with improved CSS
-        echo '<div class="pagination">';
+// Display pagination buttons with improved CSS
+echo '<div class="pagination">';
 // Button for the first page
 if ($startPage > 1) {
-    echo '<a href="?page=1';
+    echo '<a href="?page=1&server=' . $selectedServer;
     if (!empty($search)) {
         echo '&search=' . $search;
     }
@@ -170,7 +251,7 @@ if ($startPage > 1) {
 // Display the buttons for each page in the calculated range
 for ($i = $startPage; $i <= $endPage; $i++) {
     $activeClass = ($current_page == $i) ? 'active' : '';
-    echo '<a href="?page=' . $i;
+    echo '<a href="?page=' . $i . '&server=' . $selectedServer;
     if (!empty($search)) {
         echo '&search=' . $search;
     }
@@ -182,7 +263,7 @@ if ($endPage < $totalPages) {
     if ($endPage < $totalPages - 1) {
         echo '<span>...</span>';
     }
-    echo '<a href="?page=' . $totalPages;
+    echo '<a href="?page=' . $totalPages . '&server=' . $selectedServer;
     if (!empty($search)) {
         echo '&search=' . $search;
     }

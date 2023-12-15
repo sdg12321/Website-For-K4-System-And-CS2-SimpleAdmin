@@ -290,5 +290,33 @@ a {
     cursor: pointer;
 }
 
+    .server-buttons {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .server-button {
+        display: inline-block;
+        padding: 10px 20px;
+        margin: 5px;
+        background-color: #333;
+        color: white;
+        text-decoration: none;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .server-button:hover {
+        background-color: #555;
+    }
+	
+	.server-button.active {
+    background-color: #4CAF50; /* culoarea de fundal verde pentru butonul activ */
+    color: white; /* culoarea textului alb pentru butonul activ */
+}
+
+
 /* Your code */
 

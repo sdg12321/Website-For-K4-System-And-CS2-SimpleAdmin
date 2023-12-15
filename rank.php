@@ -6,20 +6,44 @@
     <title>Toplay - CS2 RANK STATS</title>
     <link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
     <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
-    <meta name="description" content="List of player ranks on the YOURSERVER." />
-
-
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
-	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css" rel="stylesheet">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <meta name="description" content="List of player ranks" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <?php
 // Include header.php
 include 'header.php';
 
 // Include connection.php for connection details
 include 'src/connection.php';
+
+// Connect to the database corresponding to the selected server
+$selectedServer = isset($_GET['server']) ? $_GET['server'] : null;
+$conn = connectToDatabase($selectedServer);
+
+// Check if the connection was successfully established
+if ($conn) {
+    // Retrieve the list of servers after the connection is established
+    $serverList = getServerList($conn);
+
+    // Set the default server if it is not already set
+    if (!isset($_GET['server'])) {
+        header("Location: ?server=" . $conn->defaultServer);
+        exit();
+    }
+
+    // Redirect to the default server if the 'server' parameter is not valid
+    if (!in_array($_GET['server'], $serverList)) {
+        header("Location: ?server=" . $conn->defaultServer);
+        exit();
+    }
+} else {
+    // Handle the error or return an appropriate value
+    die("Database connection failed.");
+}
 ?>
 
+	
 <script>
 $(document).ready(function(){
     jQuery(".cell1").click(function() {
@@ -37,13 +61,11 @@ $(document).ready(function(){
 		var data_mvp = jQuery(this).attr("data-mvp");
 		var data_roundwin = jQuery(this).attr("data-roundwin");
 		var data_roundlose = jQuery(this).attr("data-roundlose");
-		var data_kda = jQuery(this).attr("data-kda");
-
-	
+		var data_kda = jQuery(this).attr("data-kda");	
 	
   Swal.fire({
 	html: '<h2>STATS</h2><b>Steam Profile:</b> <a href="https://steamcommunity.com/profiles/' + data_steamid + '" target="_blank" rel="noopener">' + data_names + '</a><br><b>Kills:</b> ' + data_kills + '<br><b>Deaths:</b> ' + data_deaths + '<br><b>Assists:</b> ' + data_assists + '<br><b>Hits Taken:</b> ' + data_hitstaken + '<br><b>Hits Given:</b> ' + data_hitsgiven + '<br><b>Headshots:</b> ' + data_headshots + '<br><b>Grenades:</b> ' + data_grenades + '<br><b>MVP:</b> ' + data_mvp + '<br><b>Rounds Win:</b> ' + data_roundwin + '<br><b>Rounds Lose:</b> ' + data_roundlose + '<br><b>KDA:</b> ' + data_kda,
-	confirmButtonText: 'Inchide'
+	confirmButtonText: 'Close'
 })
     });
 });
@@ -51,21 +73,72 @@ $(document).ready(function(){
 
 <body>
 
-    <h1>List of player ranks on the YOURSERVER.</h1>
+<div class="server-buttons">
+    <?php
+    $serverList = getServerList($conn);
+    foreach ($serverList as $server) {
+        echo '<button class="server-button" onclick="setPrefixAndChangeServer(\'' . $server . '\', \'\')">' . strtoupper($server) . '</button>';
+    }
+    ?>
+</div>
 
-    <!-- Search form for names -->
-	<div class="searchdiv">
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Set the active class based on the current server parameter
+        var searchParams = new URLSearchParams(window.location.search);
+        var currentServer = searchParams.get('server');
+        setActiveButton(currentServer);
+    });
+
+function changeServer(selectedServer) {
+    // Set the 'server' parameter to the new server and remove other parameters
+    window.location.href = '?' + new URLSearchParams({ 'server': selectedServer }).toString();
+}
+
+function setPrefixAndChangeServer(selectedServer, prefix) {
+    // Save the prefix in a cookie
+    setCookie("prefix", prefix, 30);
+
+    // Redirect to the selected server
+    changeServer(selectedServer);
+}
+
+function setActiveButton(serverName) {
+    var buttons = document.querySelectorAll('.server-button');
+    buttons.forEach(function (button) {
+        button.classList.remove('active');
+        if (button.innerText.toLowerCase() === serverName.toLowerCase()) {
+            button.classList.add('active');
+        }
+    });
+}
+
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }	
+	
+</script>
+
+
+    <h1>List of player ranks!</h1>
+
+<!-- Search form for names -->
+<div class="searchdiv">
     <form method="GET" action="">
         <input type="text" id="search" name="search" placeholder="Enter name...">
+        <input type="hidden" name="server" value="<?php echo $selectedServer; ?>">
         <button type="submit">Search</button>
     </form>
-<?php
-// Check if a search has been performed
-if (isset($_GET['search'])) {
-    echo '<a href="' . $_SERVER['PHP_SELF'] . '" class="back-button">Back to All</a>';
-}
-?>
-	</div><br>
+    <?php
+    // Check if a search has been performed
+    if (isset($_GET['search'])) {
+        echo '<a href="' . $_SERVER['PHP_SELF'] . '?server=' . $selectedServer . '" class="back-button">Back to All</a>';
+    }
+    ?>
+</div><br>
 
     <?php
     // Set the number of records per page
@@ -80,13 +153,17 @@ if (isset($_GET['search'])) {
     // Calculate the offset to retrieve the correct records for the current page
     $offset = ($current_page - 1) * $recordsPerPage;
 
-    // Build a query to retrieve the complete details of paginated records with optional search
-   $search = isset($_GET['search']) ? $_GET['search'] : '';
-	$query = "SELECT k4ranks.name, k4ranks.rank, k4ranks.steam_id, k4ranks.points, k4stats.steam_id, k4stats.name, k4stats.kills, k4stats.deaths, k4stats.assists, k4stats.hits_taken, k4stats.hits_given, k4stats.headshots, k4stats.grenades, k4stats.mvp, k4stats.round_win, k4stats.round_lose, k4stats.kda FROM k4ranks
-	JOIN k4stats ON k4ranks.steam_id = k4stats.steam_id
-	WHERE k4ranks.name LIKE :search OR k4stats.name LIKE :search
-	ORDER BY k4ranks.points DESC, k4stats.kills DESC
-	LIMIT :offset, :limit";
+// The prefix is set based on the selected server.
+$prefix = $conn->servers[$selectedServer]['prefix'];
+
+	$search = isset($_GET['search']) ? $_GET['search'] : '';
+    // Build the query with the prefix.
+    $query = "SELECT {$prefix}k4ranks.name, {$prefix}k4ranks.rank, {$prefix}k4ranks.steam_id, {$prefix}k4ranks.points, {$prefix}k4stats.steam_id, {$prefix}k4stats.name, {$prefix}k4stats.kills, {$prefix}k4stats.deaths, {$prefix}k4stats.assists, {$prefix}k4stats.hits_taken, {$prefix}k4stats.hits_given, {$prefix}k4stats.headshots, {$prefix}k4stats.grenades, {$prefix}k4stats.mvp, {$prefix}k4stats.round_win, {$prefix}k4stats.round_lose, {$prefix}k4stats.kda 
+        FROM {$prefix}k4ranks
+        JOIN {$prefix}k4stats ON {$prefix}k4ranks.steam_id = {$prefix}k4stats.steam_id
+        WHERE {$prefix}k4ranks.name LIKE :search OR {$prefix}k4stats.name LIKE :search
+        ORDER BY {$prefix}k4ranks.points DESC, {$prefix}k4stats.kills DESC
+        LIMIT :offset, :limit";
 
 	$stmt = $conn->prepare($query);
 	$stmt->bindParam(':limit', $recordsPerPage, PDO::PARAM_INT);
@@ -109,7 +186,7 @@ if (isset($_GET['search'])) {
                 </div>';
 
         // Calculate the total number of records (not just those on the current page)
-        $countQuery = "SELECT COUNT(*) as total FROM k4ranks WHERE name LIKE :search";
+        $countQuery = "SELECT COUNT(*) as total FROM {$prefix}k4ranks WHERE name LIKE :search";
         $countStmt = $conn->prepare($countQuery);
         $countStmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
         $countStmt->execute();
@@ -143,11 +220,11 @@ if (isset($_GET['search'])) {
         // Display the ending part of the table
         echo '</div>';
 
-       // Display pagination buttons with improved CSS
-	echo '<div class="pagination">';
-	// Button for the first page
-	if ($startPage > 1) {
-    echo '<a href="?page=1';
+// Display pagination buttons with improved CSS
+echo '<div class="pagination">';
+// Button for the first page
+if ($startPage > 1) {
+    echo '<a href="?page=1&server=' . $selectedServer;
     if (!empty($search)) {
         echo '&search=' . $search;
     }
@@ -157,28 +234,28 @@ if (isset($_GET['search'])) {
     }
 }
 
-	// Display the buttons for each page in the calculated range
-	for ($i = $startPage; $i <= $endPage; $i++) {
+// Display the buttons for each page in the calculated range
+for ($i = $startPage; $i <= $endPage; $i++) {
     $activeClass = ($current_page == $i) ? 'active' : '';
-    echo '<a href="?page=' . $i;
+    echo '<a href="?page=' . $i . '&server=' . $selectedServer;
     if (!empty($search)) {
         echo '&search=' . $search;
     }
     echo '" class="' . $activeClass . '">' . $i . '</a>';
 }
 
-	// Button for the last page
-	if ($endPage < $totalPages) {
+// Button for the last page
+if ($endPage < $totalPages) {
     if ($endPage < $totalPages - 1) {
         echo '<span>...</span>';
     }
-    echo '<a href="?page=' . $totalPages;
+    echo '<a href="?page=' . $totalPages . '&server=' . $selectedServer;
     if (!empty($search)) {
         echo '&search=' . $search;
     }
     echo '">' . $totalPages . '</a>';
 }
-	echo '</div>';
+echo '</div>';
 
 
         // Close the wrapper
