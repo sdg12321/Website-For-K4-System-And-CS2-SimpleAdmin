@@ -14,7 +14,7 @@ Either one or both, depending on whether you want to use the site for just one p
 
 # Installation
 
-- Download the last version of website for MultiServers: [releases](https://github.com/sdg12321/K4-System-Website/releases). If you wish to use only the pages for k4system, then unzip the k4system.zip archive using the 'extract here' option or by dragging the files into the same folder as the archive; do not create another folder. If you only want the pages for simpleadmin, then follow the same steps above for the simpleadmins.zip archive. If you want both, follow the same steps above for both archives.
+- Download the last version of website: [releases](https://github.com/sdg12321/K4-System-Website/releases). If you wish to use only the pages for k4system, then unzip the k4system.zip archive using the 'extract here' option or by dragging the files into the same folder as the archive; do not create another folder. If you only want the pages for simpleadmin, then follow the same steps above for the simpleadmins.zip archive. If you want both, follow the same steps above for both archives.
 
 - To modify the connection to the database for k4system, you need to edit the file **src/k4con.php**. (If you have configured the K4-System plugin and it is functioning within normal parameters, then you can find the connection information in the CS2 server at: counterstrikesharp/configs/plugins/K4-System/K4-System.json.)
 
