@@ -71,4 +71,6 @@ For assistance, you can contact me on [Discord](https://discord.gg/XJEvUa9QfJ).
 # Screenshot
 You can see the live website here: [toplay.ro](https://toplay.ro/)
 
-![site](https://github.com/sdg12321/K4-System-Website/assets/151413805/54bd1d5a-ea1a-4ff6-a0a4-e55631362e04)
+![screencapture-toplay-ro-rank-php-2023-12-16-20_33_56](https://github.com/sdg12321/Website-For-K4-System-And-CS2-SimpleAdmin/assets/151413805/27a0b503-eb93-40e4-aa16-e77b72152d5a)
+![screencapture-toplay-ro-mutes-php-2023-12-16-20_35_26](https://github.com/sdg12321/Website-For-K4-System-And-CS2-SimpleAdmin/assets/151413805/f4fa9fc5-49ab-454e-9259-6c0d99e459ea)
+
