@@ -18,7 +18,7 @@ Either one or both, depending on whether you want to use the site for just one p
 
 - To modify the connection to the database for k4system, you need to edit the file **src/k4con.php**. (If you have configured the K4-System plugin and it is functioning within normal parameters, then you can find the connection information in the CS2 server at: counterstrikesharp/configs/plugins/K4-System/K4-System.json.)
 
-- To modify the connection to the database for CS2-SimpleAdmin, you need to edit the file **src/simpleadmincon.php**. (If you have configured the K4-System plugin and it is functioning within normal parameters, then you can find the connection information in the CS2 server at: counterstrikesharp/configs/plugins/CS2-SimpleAdmin/CS2-SimpleAdmin.json.)
+- To modify the connection to the database for CS2-SimpleAdmin, you need to edit the file **src/simpleadmincon.php**. (If you have configured the CS2-SimpleAdmin plugin and it is functioning within normal parameters, then you can find the connection information in the CS2 server at: counterstrikesharp/configs/plugins/CS2-SimpleAdmin/CS2-SimpleAdmin.json.)
 
 For each server, you need to add a unique name such as 'server1', 'server2', 'cs2.toplay.ro', 'classic', 'AWP ONLY' etc.(What name do you want, but not two with the same name). Add or remove as many servers as needed. If you have only one, then delete the rest of servers and leave only one.
 
