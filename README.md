@@ -1,5 +1,9 @@
 <img alt="GitHub release (with filter)" src="https://img.shields.io/github/v/release/sdg12321/K4-System-Website"> <img alt="GitHub License" src="https://img.shields.io/github/license/sdg12321/K4-System-Website"> <img alt="GitHub Stars" src="https://img.shields.io/github/stars/sdg12321/K4-System-Website">
  <img alt="GitHub all releases" src="https://img.shields.io/github/downloads/sdg12321/K4-System-Website/total"> <img alt="GitHub Last Comit" src="https://img.shields.io/github/last-commit/sdg12321/K4-System-Website">
+
+> [!WARNING]  
+> In the recent months, I've been consistently covering the expenses for the web host and CS2 server solely to maintain the plugins on the server and to check each update in order to update the website when necessary. However, my financial situation has been quite challenging lately, and I can no longer afford to pay for the web host/server host every month. Therefore, I have decided to discontinue the project. I am making it freely available for download, and I will still keep the Discord channel where you can find me. If I have the necessary time, I may be able to assist with updates or any future developments related to those plugins.
+ 
 # Website for K4-System and CS2-SimpleAdmin
 This is a simple website that displays information from the K4-System and CS2-SimpleAdmin plugin database. Currently, the plugin only provides rank, stats, time, bans, muted and only these are displayed on the website.
 
@@ -69,7 +73,6 @@ For assistance, you can contact me on [Discord](https://discord.gg/XJEvUa9QfJ).
 - [ ] List of Admins
 
 # Screenshot
-You can see the live website here: [toplay.ro](https://toplay.ro/)
 
 ![screencapture-toplay-ro-rank-php-2023-12-16-20_33_56](https://github.com/sdg12321/Website-For-K4-System-And-CS2-SimpleAdmin/assets/151413805/27a0b503-eb93-40e4-aa16-e77b72152d5a)
 ![screencapture-toplay-ro-mutes-php-2023-12-16-20_35_26](https://github.com/sdg12321/Website-For-K4-System-And-CS2-SimpleAdmin/assets/151413805/f4fa9fc5-49ab-454e-9259-6c0d99e459ea)
