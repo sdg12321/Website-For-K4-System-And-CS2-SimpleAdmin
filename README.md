@@ -64,8 +64,6 @@ function getRankClass($rankName) {
 }
 ```
 
-For assistance, you can contact me on [Discord](https://discord.gg/XJEvUa9QfJ). 
-
 # To Do list
 - [x] To implement rank, stats, and hours played from k4-system.
 - [x] To implement connecting multiple servers.
