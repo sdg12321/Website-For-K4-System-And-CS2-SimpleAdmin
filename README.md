@@ -2,7 +2,7 @@
  <img alt="GitHub all releases" src="https://img.shields.io/github/downloads/sdg12321/K4-System-Website/total"> <img alt="GitHub Last Comit" src="https://img.shields.io/github/last-commit/sdg12321/K4-System-Website">
 
 > [!WARNING]  
-> In the recent months, I've been consistently covering the expenses for the web host and CS2 server solely to maintain the plugins on the server and to check each update in order to update the website when necessary. However, my financial situation has been quite challenging lately, and I can no longer afford to pay for the web host/server host every month. Therefore, I have decided to discontinue the project. I am making it freely available for download, and I will still keep the Discord channel where you can find me. If I have the necessary time, I may be able to assist with updates or any future developments related to those plugins.
+> In the recent months, I've been consistently covering the expenses for the web host and CS2 server solely to maintain the plugins on the server and to check each update in order to update the website when necessary. However, my financial situation has been quite challenging lately, and I can no longer afford to pay for the web host/server host every month. Therefore, I have decided to discontinue the project.
  
 # Website for K4-System and CS2-SimpleAdmin
 This is a simple website that displays information from the K4-System and CS2-SimpleAdmin plugin database. Currently, the plugin only provides rank, stats, time, bans, muted and only these are displayed on the website.
